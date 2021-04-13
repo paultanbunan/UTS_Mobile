@@ -1,11 +1,5 @@
 import { Component } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
-import { FotoService } from '../../services/foto.service';
-
-export interface fileFoto {
-  name: string; //filepath
-  path: string; //webviewPath
-}
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-tab3',
@@ -13,38 +7,18 @@ export interface fileFoto {
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
+  judul;
+  isi;
+  score;
+  date;
+  picture;
+  constructor(private route:ActivatedRoute) {
+    const parameter = this.route.snapshot.paramMap;
+    this.judul = parameter.get('judul');
+    this.isi = parameter.get("isi");
+    this.date = parameter.get("date");
+    this.score = parameter.get("score");
+    this.picture = parameter.get("picture");
+   }
 
-  urlImageStorage: string[] = [];
-  nameImage: string[] = [];
-  constructor(
-    private afStorage: AngularFireStorage,
-    public fotoService: FotoService
-  ) {}
-
-  async ngOnInit(){
-    await this.fotoService.loadFoto();
-  }
-  async ionViewDidEnter() {
-    await this.fotoService.loadFoto();
-    this.tampilkanData();
-  }
-  tampilkanData() {
-    this.urlImageStorage = [];
-    this.nameImage = [];
-    var refImage = this.afStorage.storage.ref('imgStorage');
-    refImage
-      .listAll()
-      .then((res) => {
-        res.items.forEach((itemRef) => {
-          console.log(itemRef.name)
-          this.nameImage.unshift(itemRef.name);
-          itemRef.getDownloadURL().then((url) => {
-            this.urlImageStorage.unshift(url);
-          });
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
 }

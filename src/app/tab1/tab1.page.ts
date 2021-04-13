@@ -10,7 +10,10 @@ interface data {
   score : string,
   picture : string[]
 }
-
+export interface fileFoto {
+  name: string; //filepath
+  path: string; //webviewPath
+}
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',

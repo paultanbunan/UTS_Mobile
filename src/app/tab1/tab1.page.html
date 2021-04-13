@@ -13,7 +13,9 @@
   </ion-item>
   <ion-item>
     <ion-label>Isi Notes</ion-label>
-  <ion-input placeholder="Input Isi Notes" [(ngModel)]="Isi"></ion-input>
+  </ion-item>
+  <ion-item>
+  <ion-textarea placeholder="Input Isi Notes" [(ngModel)]="Isi"></ion-textarea>
   </ion-item>
   <ion-item>
   <ion-label>Input Date</ion-label>
@@ -23,22 +25,14 @@
   </ion-item>
   <ion-item>
     <ion-label>Input Score</ion-label>
+  </ion-item><ion-item>
     <ion-input placeholder="Input Score" [(ngModel)]="Score"></ion-input>
   </ion-item>
   <ion-item>
     <ion-fab-button (click)="tambahFoto()">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
+    <img *ngFor="let isiFoto of fotoService.dataFoto; index as position" [src]="isiFoto.webviewPath">
   </ion-item>
   <ion-button (click)="simpan()">SIMPAN</ion-button>
-
-  <ion-list>
-    <ion-item *ngFor="let data of isiData | async">
-      <h1>{{data.judul}}</h1>
-      <h2>{{data.isi}}</h2>
-      <h2>{{data.date}}</h2>
-      <h2>{{data.score}}</h2>
-      <h2>{{data.picture}}</h2>
-    </ion-item>
-  </ion-list>
 </ion-content>

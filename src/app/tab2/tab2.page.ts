@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { FotoService } from '../../services/foto.service';
-
-export interface fileFoto {
-  name: string; //filepath
-  path: string; //webviewPath
+import { Observable } from 'rxjs';
+interface data {
+  judul : string,
+  isi : string,   
+  date : string,
+  score : string,
+  picture : string[]
 }
 
 @Component({
@@ -14,30 +17,15 @@ export interface fileFoto {
 })
 export class Tab2Page {
 
-  urlImageStorage: string[] = [];
+  isiData: Observable<data[]>;
+  isiDatacoll : AngularFirestoreCollection<data>;
 
   constructor(
-    private afStorage: AngularFireStorage,
-    public fotoService: FotoService
-  ) {}
+    afs : AngularFirestore
+  ) {
+    this.isiDatacoll = afs.collection('dataCoba');
+    this.isiData = this.isiDatacoll.valueChanges();
+  }
 
   
-  tambahFoto(){
-    this.fotoService.tambahFoto();
-  }
-  uploadFoto() {
-    for (var index in this.fotoService.dataFoto) {
-      const imgFilePath = `imgStorage/${this.fotoService.dataFoto[index].filePath}`;
-      this.afStorage.upload(imgFilePath, this.fotoService.dataFoto[index].dataImage)
-        .then(() => {
-          this.afStorage.storage
-            .ref()
-            .child(imgFilePath)
-            .getDownloadURL()
-            .then((url) => {
-              this.urlImageStorage.unshift(url);
-            });
-        });
-      }
-  }
 }
